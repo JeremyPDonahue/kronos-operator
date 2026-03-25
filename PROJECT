@@ -8,4 +8,14 @@ layout:
 - go.kubebuilder.io/v4
 projectName: kronos-operator
 repo: github.com/JeremyPDonahue/kronos-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: my.domain
+  group: batch
+  kind: ScheduledTask
+  path: github.com/JeremyPDonahue/kronos-operator/api/v1alpha1
+  version: v1alpha1
 version: "3"
