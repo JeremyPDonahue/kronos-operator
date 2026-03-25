@@ -33,36 +33,49 @@ type ScheduledTaskSpec struct {
 
 	// +required
 	Schedule string `json:"schedule"`
+
+	// +required
 	Image string `json:"image"`
 	
 	// +optional
 	RetryLimit *int32 `json:"retryLimit"`
+
+	// +optional
+	// +kubebuilder:default=Ignore
 	FailurePolicy FailurePolicy `json:"failurePolicy"`
 
 
 }
 
+// +kubebuilder:validation:Enum=Succeeded;Failed
+type LastStatus string
+
+const (
+	LastStatusSucceeded LastStatus = "Succeeded"
+	LastStatusFailed LastStatus = "Failed"
+)
+
 // ScheduledTaskStatus defines the observed state of ScheduledTask.
 type ScheduledTaskStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
 
-	// For Kubernetes API conventions, see:
-	// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
-
-	// conditions represent the current state of the ScheduledTask resource.
-	// Each condition has a unique type and reflects the status of a specific aspect of the resource.
-	//
-	// Standard condition types include:
-	// - "Available": the resource is fully functional
-	// - "Progressing": the resource is being created or updated
-	// - "Degraded": the resource failed to reach or maintain its desired state
-	//
 	// The status of each condition is one of True, False, or Unknown.
 	// +listType=map
 	// +listMapKey=type
 	// +optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
+
+	// +optional
+	LastRun *metav1.Time `json:"lastRun,omitempty"`
+	
+	// +optional
+	NextRun *metav1.Time `json:"nextRun,omitempty"`
+
+	// +optional
+	LastStatus LastStatus `json:"lastStatus,omitempty"`
+	
+	RunCount int32 `json:"runCount"`
+	SuccessCount int32 `json:"successCount"`
+	FailureCount int32 `json:"failureCount"`
 }
 
 // +kubebuilder:object:root=true
